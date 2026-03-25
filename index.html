@@ -22,14 +22,270 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ==============================
+       MOBILE RESPONSIVE FIXES
+       ============================== */
+
+    /* --- Bottom Mobile Nav Bar --- */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: #121212;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 0;
+      height: 60px;
+      align-items: stretch;
+    }
+    .mobile-nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      font-size: 10px;
+      font-family: inherit;
+      padding: 6px 0 4px;
+      transition: color 0.2s;
+    }
+    .mobile-nav-btn.active,
+    .mobile-nav-btn:active {
+      color: #1ed760;
+    }
+    .mobile-nav-btn svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    @media (max-width: 768px) {
+      /* Show mobile nav, hide desktop sidebar */
+      .mobile-nav { display: flex; }
+      .sidebar { display: none !important; }
+
+      /* App layout: full width, no sidebar */
+      .app {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100vw !important;
+        overflow: hidden !important;
+      }
+
+      /* Main content: full width, scroll within */
+      .main-content {
+        width: 100% !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+        flex: 1 !important;
+        overflow-y: auto !important;
+        /* Space for player bar + bottom nav */
+        padding-bottom: 140px !important;
+      }
+
+      /* Top bar: slimmer, full width */
+      .topbar {
+        padding: 10px 14px !important;
+        gap: 8px !important;
+      }
+      .topbar-search {
+        flex: 1 !important;
+        min-width: 0 !important;
+      }
+      .nav-arrows { display: none !important; }
+      .topbar-actions .icon-btn:first-child { display: none !important; }
+
+      /* Page content padding */
+      .page-content {
+        padding: 14px !important;
+      }
+
+      /* Hero section */
+      .hero-section h1,
+      .greeting {
+        font-size: 26px !important;
+      }
+      .hero-sub {
+        font-size: 14px !important;
+      }
+
+      /* Cards grid: 2 columns on mobile */
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+      }
+
+      /* Genre grid: 2 columns */
+      .genre-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+      }
+      .genre-grid.large {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+
+      /* Quick picks: horizontal scroll */
+      .quick-picks {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        gap: 10px !important;
+        padding-bottom: 8px !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+      }
+      .quick-picks::-webkit-scrollbar { display: none !important; }
+
+      /* Player bar: compact mobile layout */
+      .player-bar {
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 60px !important; /* above mobile nav */
+        z-index: 150 !important;
+        padding: 8px 12px !important;
+        display: grid !important;
+        grid-template-columns: 1fr auto !important;
+        grid-template-rows: auto auto !important;
+        gap: 6px 8px !important;
+        background: #181818 !important;
+        border-top: 1px solid rgba(255,255,255,0.1) !important;
+      }
+      .player-track {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        min-width: 0 !important;
+        gap: 8px !important;
+      }
+      .player-track-info {
+        min-width: 0 !important;
+      }
+      .player-title {
+        font-size: 13px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+      .player-artist {
+        font-size: 11px !important;
+      }
+      /* Hide extra controls on player bar, show only play/pause + next */
+      .player-controls {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+      }
+      .ctrl-row {
+        gap: 4px !important;
+      }
+      /* Hide shuffle, repeat, prev on mini bar to save space */
+      #shuffle-btn,
+      #repeat-btn,
+      .ctrl-row .ctrl-sm:first-child,
+      .ctrl-row .ctrl-sm:nth-child(2),
+      .ctrl-row .ctrl-sm:last-child {
+        display: none !important;
+      }
+      /* Show only play and next */
+      #play-btn,
+      .ctrl-row .ctrl-sm:nth-child(4) {
+        display: flex !important;
+      }
+      .progress-row {
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+        width: 100% !important;
+        gap: 6px !important;
+      }
+      .player-extra { display: none !important; }
+
+      /* Now Playing full page */
+      .now-playing-full {
+        padding: 16px !important;
+        padding-bottom: 160px !important;
+      }
+      .np-art-wrap {
+        width: min(260px, 80vw) !important;
+        height: min(260px, 80vw) !important;
+        margin: 0 auto !important;
+      }
+      .np-title {
+        font-size: 20px !important;
+      }
+      .np-volume-wrap { display: none !important; }
+
+      /* Track list items */
+      .track-item {
+        padding: 10px 8px !important;
+      }
+
+      /* Search page */
+      .search-hero h1 {
+        font-size: 24px !important;
+      }
+      .search-bar-wrap {
+        padding: 10px 14px !important;
+      }
+
+      /* Modal */
+      .modal-card {
+        width: 90vw !important;
+        max-width: 340px !important;
+        padding: 20px !important;
+      }
+
+      /* Playlists grid */
+      .playlists-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+      }
+
+      /* Section title */
+      .section-title {
+        font-size: 16px !important;
+      }
+      .page-heading {
+        font-size: 24px !important;
+      }
+    }
+
+    /* Extra small phones */
+    @media (max-width: 380px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+      .genre-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+      .greeting { font-size: 22px !important; }
+    }
+  </style>
 
   <script>
     // Register Service Worker for PWA/offline support
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(r => console.log('SW registered:', r.scope))
-          .catch(e => console.warn('SW failed:', e));
+        fetch('/sw.js', { method: 'HEAD' })
+          .then(res => {
+            if (res.ok) {
+              navigator.serviceWorker.register('/sw.js')
+                .then(r => console.log('SW registered:', r.scope))
+                .catch(e => console.warn('SW failed:', e));
+            }
+          })
+          .catch(() => {/* sw.js not present, skip silently */});
       });
     }
   </script>
@@ -369,6 +625,26 @@
     </div>
   </div>
 
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <button class="mobile-nav-btn active" data-page="home" onclick="navigateTo('home'); setMobileNavActive(this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="mobile-nav-btn" data-page="search" onclick="navigateTo('search'); setMobileNavActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span>Search</span>
+    </button>
+    <button class="mobile-nav-btn" data-page="library" onclick="navigateTo('library'); setMobileNavActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+      <span>Library</span>
+    </button>
+    <button class="mobile-nav-btn" data-page="now-playing" onclick="navigateTo('now-playing'); setMobileNavActive(this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></svg>
+      <span>Player</span>
+    </button>
+  </nav>
+
   <!-- Hidden YouTube iframe -->
   <div id="yt-player-wrap">
     <div id="yt-player"></div>
@@ -390,6 +666,24 @@
   </div>
 
   <script src="app.js"></script>
+  <script>
+    // Mobile nav active state sync
+    function setMobileNavActive(btn) {
+      document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof navigateTo === 'function') {
+        const orig = navigateTo;
+        window.navigateTo = function(page) {
+          orig(page);
+          document.querySelectorAll('.mobile-nav-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.page === page);
+          });
+        };
+      }
+    });
+  </script>
   <script>
     // Load YouTube IFrame API
     var tag = document.createElement('script');
